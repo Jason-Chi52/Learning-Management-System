@@ -17,3 +17,8 @@ Student Capabilities
     View a list of available courses.
     Join a course created by an instructor.
     Access and read chapters that have been marked as public by the instructor.
+
+
+Front-End setup:
+npx create-next-app@latest . --use-npm --no-tailwind --eslint
+npm run dev 
