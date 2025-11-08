@@ -22,3 +22,11 @@ Student Capabilities
 Front-End setup:
 npx create-next-app@latest . --use-npm --no-tailwind --eslint
 npm run dev 
+
+
+Back-End setup
+python -m pip install django djangorestframework djangorestframework-simplejwt django-cors-headers
+python -m django startproject core .    #this will create manage.py 
+python manage.py startapp api          #creates api
+
+python manage.py makemigrations
