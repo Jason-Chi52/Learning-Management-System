@@ -7,6 +7,7 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description']
 
 class ChapterSerializer(serializers.ModelSerializer):
+    course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
     class Meta:
         model = Chapter
         fields = ['id', 'course', 'title', 'content', 'is_public']
