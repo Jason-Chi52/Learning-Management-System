@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-// ✅ Use the /react entrypoints
+
 import { Plate } from '@udecode/plate/react';
-import { createParagraphPlugin } from '@udecode/plate-paragraph/react';
+import { createParagraphPlugin } from '@udecode/plate-paragraph';
 import type { Descendant } from 'slate';
 
 // --- serialize/deserialize string <-> Slate nodes ---
@@ -44,14 +44,16 @@ export default function PlateEditor({
     onChange(nodesToString(editorValue));
   }, [editorValue, onChange]);
 
+  const plateProps: any = {
+    plugins,
+    value: editorValue,
+    onChange: (options: any) => setEditorValue(options.value as Descendant[]),
+    editableProps: { style: { minHeight: 160, padding: 8 } },
+  };
+
   return (
     <div style={{ border: '1px solid #ccc', borderRadius: 6, padding: 8 }}>
-      <Plate
-        plugins={plugins}
-        value={editorValue}
-        onChange={setEditorValue}
-        editableProps={{ style: { minHeight: 160, padding: 8 } }}
-      />
+      <Plate {...plateProps} />
     </div>
   );
 }
