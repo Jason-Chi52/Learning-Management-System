@@ -6,7 +6,7 @@ import { API, authHeaders } from '../lib/api';
 
 type Course = { id: number; title: string; description: string };
 
-export default function InstructorPage() {
+export default function StudentPage() {
   const router = useRouter();
   const [me, setMe] = useState<{ username: string; role: string } | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -20,22 +20,20 @@ export default function InstructorPage() {
         const meRes = await fetch(`${API}/auth/me/`, { headers: authHeaders() });
         if (!meRes.ok) throw new Error('Not authenticated');
         const meJson = await meRes.json();
-
-        // only instructors should be here
-        if (meJson.role !== 'Instructor') {
-          router.replace('/student');
+        // only students should be here
+        if (meJson.role !== 'Student') {
+          router.replace('/instructor');
           return;
         }
         setMe(meJson);
 
-        // instructors can view/manage their own courses
-        const cRes = await fetch(`${API}/instructor/courses/`, { headers: authHeaders() });
-        if (!cRes.ok) throw new Error('Failed to fetch courses');
+        // students can view all courses (public)
+        const cRes = await fetch(`${API}/courses/`);
         const cJson = await cRes.json();
         setCourses(cJson);
       } catch (e: any) {
         setErr(e.message || 'Failed to load');
-        router.replace('/');
+        router.replace('/'); // go back to login
       } finally {
         setLoading(false);
       }
@@ -53,7 +51,7 @@ export default function InstructorPage() {
   return (
     <main style={{ maxWidth: 900, margin: '40px auto', fontFamily: 'sans-serif' }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Instructor Dashboard</h1>
+        <h1>Student Dashboard</h1>
         <div>
           <span style={{ marginRight: 16 }}>
             {me ? <>Signed in as <b>{me.username}</b> • Role: <b>{me.role}</b></> : null}
@@ -63,9 +61,9 @@ export default function InstructorPage() {
       </header>
 
       <section style={{ marginTop: 24 }}>
-        <h2>Your Courses</h2>
+        <h2>Available Courses</h2>
         {courses.length === 0 ? (
-          <p>You have not created any courses yet.</p>
+          <p>No courses yet.</p>
         ) : (
           <ul>
             {courses.map((c) => (
