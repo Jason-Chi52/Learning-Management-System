@@ -4,7 +4,7 @@ from django.db import models
 
 #A Course has a title and description.
 class Course(models.Model):
-    owner = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, default="") 
     description = models.TextField(blank=True)
     def __str__(self):
         return self.title
