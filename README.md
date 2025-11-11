@@ -29,4 +29,7 @@ python -m pip install django djangorestframework djangorestframework-simplejwt d
 python -m django startproject core .    #this will create manage.py 
 python manage.py startapp api          #creates api
 
-python manage.py makemigrations
+python manage.py makemigrations #make changes
+
+
+python manage.py runserver 8000

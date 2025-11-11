@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from api.views import CourseViewSet, ChapterViewSet, home
+from api.views import CourseViewSet, ChapterViewSet, home, me
 
 
 router = DefaultRouter()
@@ -28,4 +28,5 @@ urlpatterns = [
     path('', home),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/auth/me/', me), 
 ]
