@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { API, authHeaders } from '../lib/api';
 
 type Course = { id: number; title: string; description?: string | null };
@@ -10,6 +11,7 @@ export default function InstructorCoursesPage() {
   const [form, setForm] = useState({ title: '', description: '' });
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function fetchCourses() {
     setLoading(true);
@@ -68,6 +70,21 @@ export default function InstructorCoursesPage() {
 
   return (
     <div style={{ maxWidth: 800, margin: '2rem auto', padding: '1rem' }}>
+      {/* ✅ Back button */}
+      <button
+        onClick={() => router.push('/')}
+        style={{
+          marginBottom: '1rem',
+          padding: '6px 12px',
+          borderRadius: '6px',
+          background: '#333',
+          color: 'white',
+          cursor: 'pointer',
+        }}
+      >
+        ← Back
+      </button>
+
       <h1>Instructor — My Courses</h1>
 
       <form onSubmit={createCourse} style={{ margin: '1rem 0' }}>
@@ -96,7 +113,15 @@ export default function InstructorCoursesPage() {
 
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {courses.map((c) => (
-          <li key={c.id} style={{ border: '1px solid #ddd', borderRadius: 8, padding: 12, marginBottom: 8 }}>
+          <li
+            key={c.id}
+            style={{
+              border: '1px solid #ddd',
+              borderRadius: 8,
+              padding: 12,
+              marginBottom: 8,
+            }}
+          >
             {editingId === c.id ? (
               <>
                 <input
@@ -108,8 +133,15 @@ export default function InstructorCoursesPage() {
                 <textarea
                   placeholder="Description"
                   value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  style={{ width: '100%', padding: 8, minHeight: 80, marginBottom: 8 }}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
+                  style={{
+                    width: '100%',
+                    padding: 8,
+                    minHeight: 80,
+                    marginBottom: 8,
+                  }}
                 />
                 <button onClick={() => updateCourse(c.id)}>Save</button>{' '}
                 <button
@@ -123,7 +155,13 @@ export default function InstructorCoursesPage() {
               </>
             ) : (
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                  }}
+                >
                   <h4 style={{ margin: 0 }}>{c.title}</h4>
                   <a href={`/courses/${c.id}`}>Manage chapters →</a>
                 </div>
@@ -132,12 +170,18 @@ export default function InstructorCoursesPage() {
                   <button
                     onClick={() => {
                       setEditingId(c.id);
-                      setForm({ title: c.title, description: c.description ?? '' });
+                      setForm({
+                        title: c.title,
+                        description: c.description ?? '',
+                      });
                     }}
                   >
                     Edit
                   </button>
-                  <button onClick={() => deleteCourse(c.id)} style={{ color: 'crimson' }}>
+                  <button
+                    onClick={() => deleteCourse(c.id)}
+                    style={{ color: 'crimson' }}
+                  >
                     Delete
                   </button>
                 </div>
